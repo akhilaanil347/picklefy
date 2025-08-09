@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Picklefy - Absurd Life Decision Maker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Josefin Sans', sans-serif;
+    }
+
+    body {
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Animated Gradient Background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(270deg, #001f3f, #004080, #00e6e6, #0066cc);
+      background-size: 800% 800%;
+      animation: gradientMove 20s ease infinite;
+      z-index: -3;
+    }
+
+    /* Floating Blobs */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(circle, rgba(0,255,255,0.15) 20%, transparent 20%),
+                        radial-gradient(circle, rgba(0,128,255,0.15) 20%, transparent 20%);
+      background-size: 200px 200px, 300px 300px;
+      animation: floatBlobs 15s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes floatBlobs {
+      0% { background-position: 0 0, 50px 50px; }
+      50% { background-position: 100px 100px, 150px 150px; }
+      100% { background-position: 0 0, 50px 50px; }
+    }
+
+    /* Picklefy Title Animation */
+    .title {
+      font-size: 4rem;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      animation: dropDown 1s ease-out forwards;
+      transform: translateY(-100px);
+      opacity: 0;
+      text-shadow: 2px 2px rgba(0,0,0,0.4);
+    }
+
+    @keyframes dropDown {
+      0% {
+        transform: translateY(-100px);
+        opacity: 0;
+      }
+      70% {
+        transform: translateY(10px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .landing {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+      padding: 2rem;
+    }
+
+    .landing h1 {
+      font-size: 3rem;
+      text-shadow: 2px 2px rgba(0,0,0,0.4);
+    }
+
+    .landing p {
+      font-size: 1.2rem;
+      max-width: 500px;
+      color: #cce6ff;
+    }
+
+    .landing button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1.2rem;
+      background: #004d99;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .landing button:hover {
+      background: #00b3ff;
+      transform: scale(1.05);
+    }
+
+    .chat {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      width: 100%;
+      justify-content: center
+    }
+
+    .chat-box {
+      background: rgba(0,0,0,0.5);
+      padding: 1rem;
+      border-radius: 15px;
+      max-width: 600px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .messages {
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      overflow-y: auto;
+    }
+
+    .msg {
+      padding: 0.7rem 1rem;
+      border-radius: 15px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #0059b3;
+      color: #fff;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background: #003d66;
+      color: #fff;
+    }
+
+    .input-box {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .input-box input {
+      flex: 1;
+      padding: 0.7rem;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .input-box button {
+      padding: 0.7rem 1rem;
+      border: none;
+      border-radius: 10px;
+      background: #004d99;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .input-box button:hover {
+      background: #00b3ff;
+    }
+
+    @media (max-width: 768px) {
+      .landing h1 { font-size: 2.5rem; }
+      .landing p { font-size: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      .title { font-size: 2.8rem; }
+      .landing h1 { font-size: 2rem; }
+      .chat-box { padding: 0.8rem; }
+      .input-box input { padding: 0.5rem; }
+      .input-box button { padding: 0.5rem 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="landing">
+  <div class="title">Picklefy</div>
+  <h1>Ask anything</h1>
+  <p>(But the decision is mine)</p>
+  <button onclick="startChat()">Start Making Picklefy Decisions</button>
+</div>
+
+<div class="chat">
+  <div class="chat-box">
+    <div class="messages" id="messages"></div>
+    <div class="input-box">
+      <input type="text" id="userInput" placeholder="Type your life question...">
+      <button onclick="sendMessage()">Ask</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const predefinedQA = {
+    "should i eat something": "venel poii kayik kutiii",
+    "should i quit my job": "Thendaan ready aayikoo .",
+    "should i date them": "Them ooo...1pore ninak.",
+    "should i travel now": "athe..Moon illl pokam?",
+    "should i start a business": "Risk eduku..sandhoshikuu.",
+    "will emmanuel ever get a girlfriend": "NO",
+    "will athulya ever get married": "If she keeps asking, probably not.",
+    "does picklefy work": "Of course it does, just like your WiFi during a storm.",
+    "do i need to eat": "venda food laabikkam.",
+    "should i go to the gym": "you are already fat oh sorry i mean  fit,but  you just need to stop eating for the sake of humanity.",
+    "should i buy that thing": "If you can't afford it, why? Regret is cheaper.",
+    "should i learn to code": "Only if you want to understand why your computer hates you.",
+    "should i get a pet": "Enthinu..manushyanmarkoo sahikkkan pattun illa ninne.",
+    "should i propose my crush": "Do it, (you are going to cry later) but do it.",
+    "should i go to college": "If you want to pay for the privilege of being broke, sure.",
+    "should i invest in stocks": "Only if you enjoy watching your money disappear.",
+    "should i buy a house": "If you like debt and maintenance, go for it.",
+    "When will i die": "Probably not today, but who knows? Life is unpredictable.",
+    "should i learn a new language": "fix your grammar first.",
+    "will i ever be happy": "Happiness is overrated, just ask your WiFi.",
+    "will i ever get married": "Marriage? Only if you can find someone who tolerates your WiFi habits.",
+    "should i go to the party": "If you want to regret your life choices tomorrow, absolutely.",
+    "should i buy a new phone": "If your current one is a potato, then yes.",
+    "should i change my hairstyle": "Only if you want to look like a different person every week.",
+  };
+
+  const fallbackAnswers = [
+    "That’s a bold question for someone with WiFi problems.",
+    "Sure, and while you’re at it, adopt a penguin.",
+    "Yes, but don’t ask me to help clean up afterwards.",
+    "Only if you’re ready to explain it to future you.",
+    "You could… or you could just binge-watch something instead.",
+    "Do it, but wear sunglasses so it feels cooler.",
+    "If it feels right, it’s probably mildly wrong.",
+    "Sounds like a tomorrow problem.",
+    "That question just screamed ‘plot twist’."
+  ];
+
+  function startChat() {
+    document.querySelector('.landing').style.display = 'none';
+    document.querySelector('.chat').style.display = 'flex';
+    document.getElementById('userInput').focus();
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('userInput');
+    const text = input.value.trim().toLowerCase();
+    if (!text) return;
+
+    addMessage(input.value.trim(), 'user');
+    input.value = '';
+
+    setTimeout(() => {
+      let answer = predefinedQA[text] || fallbackAnswers[Math.floor(Math.random() * fallbackAnswers.length)];
+      addMessage(answer, 'bot');
+    }, 600);
+  }
+
+  function addMessage(text, type) {
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('msg', type);
+    msgDiv.textContent = text;
+    document.getElementById('messages').appendChild(msgDiv);
+    document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+  }
+
+  document.getElementById('userInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  });
+</script>
+</body>
+</html>
