@@ -6,7 +6,7 @@ It’s built with HTML, CSS, and JavaScript, designed with a sleek dark blue aes
 ---
 
 ## Features
-- 💬 Randomized witty responses for everyday questions.
+- 💬 savage responses for everyday questions.
 - 🎨 Dark blue gradient theme for a modern look.
 - ⌨️ Send message on Enter key for quick chatting.
 - 📱 Responsive design – works on desktop and mobile.
